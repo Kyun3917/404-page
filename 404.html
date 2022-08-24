@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="style.css">
+<title>404 not found</title>
+<style>
+body{
+    text-align:center;
+}
+#MenuButton{
+    position:absolute;
+    transition:.1s;
+    transform:translate(-50%,-50%);
+
+    font-size:50px;
+    background:rgba(8, 20, 95, 0.495);
+    border:solid 2px black;
+    font-weight:bolder;
+    white-space:nowrap;
+}
+.rotate:hover{
+    transform:rotateZ(720deg);
+    transition:3s;
+}
+#Star{
+    position:absolute;
+    transition:1s;
+    font-size:50px;
+}
+</style>
+<h1><fall>404</fall> NOT FOUND</h1>
+</head>
+
+<body>
+    <p>お探しのページは見つかりませんでした</p>
+    <a href="https://pscsrv.co.jp/">
+        <div class="rotate">
+            <RetMenu id="MenuButton" type="button">
+                <p>トップページへ戻る</p>
+            </RetMenu>
+        </div>
+    </a>
+    <star id="Star"><p>☆</p></star>
+</body>
+<script type="text/javascript">
+        function MoveButton(MenuButton){
+        var MenuButton = document.getElementById("MenuButton");
+
+        var x=0;
+        var y=0;
+        var disp=0;
+        
+        var timer=setInterval(function(){
+            console.log(x);
+            disp+=0.1*Math.PI;
+            x=100*Math.sin(disp)+window.innerWidth/2;
+            y=100*Math.cos(disp)+window.innerHeight/2;    
+            MenuButton.style.left=x+"px";
+            MenuButton.style.top=y+"px";
+        },100);
+    }
+        function star(Star){
+            var star=document.getElementById("Star");
+            var x=100;
+            var y=100;
+            var y0=0;
+            var t=0;
+            var v0=0;
+            var pre_v;
+            var timer=setInterval(function(){
+                t+=1;
+                y=v0*t+4.9*t*t;
+                if(y>window.innerHeight/2){
+                    v0=-0.8*pre_v;
+                if(pre_v==0)
+                    x=10*Math.random()-0.5;
+                y0=window.innerHeight/2-50;
+                y=0;
+                t=0;
+                }else{
+                    pre_v=v0+9.8*t;
+                }
+                star.style.left=x+"px";
+                star.style.top=y+y0+"px";
+            },100);
+        }
+    MoveButton("MoveButton");
+    star("star");
+
+
+</script>
+</html>
