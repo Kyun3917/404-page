@@ -7,87 +7,168 @@
 <style>
 body{
     text-align:center;
+    background:radial-gradient(white, rgb(161, 248, 135));
 }
 #MenuButton{
-    position:absolute;
+    position:fixed;
     transition:.1s;
     transform:translate(-50%,-50%);
 
-    font-size:50px;
-    background:rgba(8, 20, 95, 0.495);
+    font-size:25px;
+    background:rgba(255, 255, 255, 0.495);
     border:solid 2px black;
     font-weight:bolder;
     white-space:nowrap;
 }
-.rotate:hover{
-    transform:rotateZ(720deg);
-    transition:3s;
+#click:active{
+    position:static;
 }
 #Star{
-    position:absolute;
-    transition:1s;
+    position:fixed;
+    transition:0.1s;
     font-size:50px;
+    text-shadow:2px black;
+    color:yellow;
+}
+#Fall1{
+    position:fixed;
+    transition:0.1s;
+    white-space:nowrap;
+    font-weight:bolder;
+    margin-left:-45px;
+}
+#Fall2{
+    position:fixed;
+    transition:0.1s;
+    white-space:nowrap;
+    font-weight:bolder;
+    text-align:center;
+}
+#Fall3{
+    position:fixed;
+    transition:0.1s;
+    white-space:nowrap;
+    font-weight:bolder;
+    margin-left:45px;
 }
 </style>
-<h1><fall>404</fall> NOT FOUND</h1>
 </head>
 
-<body>
-    <p>お探しのページは見つかりませんでした</p>
+<body id="click">
+    <div>
+    <fall id="Fall1">404</fall> <fall id="Fall2">NOT</fall><fall id="Fall3">FOUND</fall><br>
+    <p>お探しのページは見つかりませんでした。</p>
+    </div>
     <a href="https://pscsrv.co.jp/">
-        <div class="rotate">
             <RetMenu id="MenuButton" type="button">
                 <p>トップページへ戻る</p>
             </RetMenu>
-        </div>
     </a>
-    <star id="Star"><p>★★</p></star>
+    <div>
+    <star id="Star" ><p>★</p></star>
+    </div>
+
+    <span id="click"></span>
 </body>
 <script type="text/javascript">
-        function MoveButton(MenuButton){
+    function MoveButton(MenuButton){
         var MenuButton = document.getElementById("MenuButton");
-
         var x=0;
         var y=0;
-        var disp=0;
+        var rad=0;
         
         var timer=setInterval(function(){
-            console.log(x);
-            disp+=0.1*Math.PI;
-            x=100*Math.sin(disp)+window.innerWidth/2;
-            y=100*Math.cos(disp)+window.innerHeight/2;    
+            rad+=0.1*Math.PI;
+            if(rad>=2*Math.PI)
+                rad=0;
+            x=100*Math.sin(rad)+window.innerWidth/2;
+            y=100*Math.cos(rad)+window.innerHeight/2;    
             MenuButton.style.left=x+"px";
             MenuButton.style.top=y+"px";
         },100);
     }
-        function star(Star){
-            var star=document.getElementById("Star");
+    function rotation(id,direc){
+        var rotation=document.getElementById(id);
+        var x=5+rotation.style.left;
+        var y=5+rotation.style.top;
+        var cx=(rotation.style.left+rotation.style.right)/2;
+        var cy=(rotation.style.top+rotation.style.bottom)/2;
+        var rotx;
+        var roty;
+        var angle=0;
+        var timer=setInterval(function(){
+            
+            angle+=direc*Math.atan2(y-cy,x-cx);
+            //rotx=(x-cx)*Math.cos(angle)-(y-cy)*Math.sin(angle)+cx;
+            //roty=(x-cx)*Math.sin(angle)+(y-cy)*Math.cos(angle)+cy;
+            rotx=Math.sqrt((x-cx)*(x-cx)+(y-cy)*(y-cy))*(angle-Math.sin(angle)+cx);
+            roty=Math.sqrt((x-cx)*(x-cx)+(y-cy)*(y-cy))*(1-Math.cos(angle)+cy);
+            rotation.style.rotate=angle+"rad";    
+            rotation.style.left=rotx+Window.innerWidth+"px";
+            //rotation.style.top=-1*roty+"px";
+        },100);
+        
+    }
+    function freeFall(id){
+            var tags=document.getElementById(id);
             var x=window.innerWidth/2;
-            var y=0;
+            var aft_x=0;
+            var y;
             var y0=0;
             var t=0;
             var v0=0;
             var pre_v;
+
+            var cx=(tags.style.left+tags.style.right)/2;
+            var cy=(tags.style.top+tags.style.bottom)/2;
+            var rotx;
+            var roty;
+            var angle=0;
+
             var timer=setInterval(function(){
                 t+=1;
                 y=v0*t+4.9*t*t;
-                if(y>window.innerHeight/2){
+                if(y+y0>window.innerHeight/2-tags.style.bottom){
+                    if(v0==0){
+                        aft_x=10*(Math.random()-0.5);
+                    }
                     v0=-0.8*pre_v;
-                if(pre_v==0)
-                    x=10*Math.random()-0.5;
-                y0=window.innerHeight/2-50;
-                y=0;
-                t=0;
+                    t=0;   
+                    y0=window.innerHeight/2-tags.style.bottom;
+                    y=0;
                 }else{
                     pre_v=v0+9.8*t;
                 }
-                star.style.left=x+"px";
-                star.style.top=y+y0+"px";
+                x+=aft_x;
+
+                /*angle+=0.5*Math.atan2(y-cy,x-cx);
+                rotx+=Math.sqrt((x-cx)*(x-cx)+(y-cy)*(y-cy))*(angle-Math.sin(angle));
+                roty+=Math.sqrt((x-cx)*(x-cx)+(y-cy)*(y-cy))*(1-Math.cos(angle));
+
+                tags.style.rotate=angle+"rad"; */   
+                tags.style.left=x+"px";
+                tags.style.top=y+y0+"px";
+                /*if(t>50){
+                tags.style.left=rotx+"px";
+                tags.style.top=-1*roty+"px";
+                angle=Math.atan2(y-cy,x-cx);
+                }*/
             },100);
         }
     MoveButton("MoveButton");
-    star("star");
-
-
+    var flag=0;
+        if(flag==0){
+        document.getElementById("click").onclick=function(){
+            flag++;
+            freeFall("Fall1");
+            rotation("Fall1",10*(Math.random()-0.5));
+            freeFall("Fall2");
+            rotation("Fall2",10*(Math.random()-0.5));
+            freeFall("Fall3");
+            rotation("Fall3",10*(Math.random()-0.5));
+            freeFall("Star");
+            rotation("Star",10*(Math.random()-0.5));
+        }
+    }
 </script>
 </html>
