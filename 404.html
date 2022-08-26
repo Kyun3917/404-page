@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html id="click">
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css" href="style.css">
@@ -7,7 +7,25 @@
 <style>
 body{
     text-align:center;
-    background:radial-gradient(white, rgb(161, 248, 135));
+    background:rgb(255, 241, 84);
+}
+#ul{
+    position:absolute;
+    transition:.1s;
+    list-style:none;
+    display:flex;
+}
+#list{
+    position:fixed;
+    Height:1280px;
+    border:0;
+    border-left:solid 50px white;
+    border-right:solid 50px rgb(255, 241, 84);
+    margin-left:41px;
+    transform:rotate(-45deg);
+}
+.text{
+    z-index:200;
 }
 #MenuButton{
     position:fixed;
@@ -20,57 +38,63 @@ body{
     font-weight:bolder;
     white-space:nowrap;
 }
-#click:active{
-    position:static;
-}
-#Star{
-    position:fixed;
-    transition:0.1s;
-    font-size:50px;
-    text-shadow:2px black;
-    color:yellow;
-}
 #Fall1{
     position:fixed;
     transition:0.1s;
     white-space:nowrap;
     font-weight:bolder;
-    margin-left:-45px;
+    margin-left:-75px;
 }
 #Fall2{
     position:fixed;
     transition:0.1s;
     white-space:nowrap;
     font-weight:bolder;
-    text-align:center;
+    margin-left:-25px;
 }
 #Fall3{
     position:fixed;
     transition:0.1s;
     white-space:nowrap;
     font-weight:bolder;
-    margin-left:45px;
+    margin-left:25px;
 }
 </style>
 </head>
 
 <body id="click">
-    <div>
+    <ul id="ul">
+        <li id="list"></li>
+        <li id="list"></li>
+        <li id="list"></li>
+        <li id="list"></li>
+        <li id="list"></li>
+        <li id="list"></li>
+        <li id="list"></li>
+        <li id="list"></li>
+
+    </ul>
+    <div class="text">
     <fall id="Fall1">404</fall> <fall id="Fall2">NOT</fall><fall id="Fall3">FOUND</fall><br>
-    <p>お探しのページは見つかりませんでした。</p>
+    <p>お探しのページは見つかりませんでした</p>
     </div>
     <a href="https://pscsrv.co.jp/">
             <RetMenu id="MenuButton" type="button">
                 <p>トップページへ戻る</p>
             </RetMenu>
     </a>
-    <div>
-    <star id="Star" ><p>★</p></star>
-    </div>
-
     <span id="click"></span>
 </body>
 <script type="text/javascript">
+    /*function CSSStyle(id){
+        var i;
+        for(i=1;i<window.innerWidth+1;i++){
+            document.createElement("li");
+            id2=document.getElementById("list");
+            id2.style.left=(id2.style.right-id2.style.left)*i+"px";
+            document.ul.insertBefore("li",id2);
+        }
+    }*/
     function MoveButton(MenuButton){
         var MenuButton = document.getElementById("MenuButton");
         var x=0;
@@ -155,20 +179,31 @@ body{
                 }*/
             },100);
         }
+    var i;
     MoveButton("MoveButton");
+    ul=document.getElementById("ul");
+    ul.style.left=window.innerWidth/2+"px";
+    ul.style.top=-250+"px";
+    //CSSStyle("ul");
     var flag=0;
-        if(flag==0){
+    var timer=setInterval(function(){
         document.getElementById("click").onclick=function(){
             flag++;
-            freeFall("Fall1");
-            rotation("Fall1",10*(Math.random()-0.5));
-            freeFall("Fall2");
-            rotation("Fall2",10*(Math.random()-0.5));
-            freeFall("Fall3");
-            rotation("Fall3",10*(Math.random()-0.5));
-            freeFall("Star");
-            rotation("Star",10*(Math.random()-0.5));
+            switch(flag){
+                case 1:
+                    freeFall("Fall1");
+                    rotation("Fall1",10*(Math.random()-0.5));  
+                    break;
+                case 2:
+                    freeFall("Fall2");
+                    rotation("Fall2",10*(Math.random()-0.5));
+                    break;
+                case 3:
+                    freeFall("Fall3");
+                    rotation("Fall3",10*(Math.random()-0.5));
+                break;
+            }
         }
-    }
+    },100);
 </script>
 </html>
